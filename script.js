@@ -28,3 +28,22 @@ function parseCSV() {
   xhr.open("GET", csvFile, true);
   xhr.send();
 }
+
+function searchTable() {
+  document.getElementsByTagName("table")[0].setAttribute("id", "dataTable");
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("searchInput").value.toUpperCase();
+  table = document.getElementById("dataTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.textContent.toUpperCase().indexOf(input) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+document.getElementById("searchInput").addEventListener("keyup", searchTable);
