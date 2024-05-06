@@ -1,0 +1,43 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #1f1f1f; /* Dark background color */
+  color: #ffffff; /* Light text color */
+}
+
+table {
+  border-collapse: collapse;
+  margin: 20px auto;
+  background-color: #333333; /* Darker table background color */
+  border-top: 1px solid #ddd; /* Horizontal border above header */
+}
+
+th,
+td {
+  border-bottom: 1px solid #ddd; /* Only horizontal border */
+  padding: 8px;
+  text-align: left;
+  color: #ffffff; /* Light text color */
+}
+
+th {
+  background-color: #555555; /* Darker header background color */
+  border-left: 1px solid #ddd; /* Outer left border */
+  border-right: 1px solid #ddd; /* Outer right border */
+}
+
+td:first-child {
+  border-left: 1px solid #ddd; /* Outer left border */
+}
+
+td:last-child {
+  border-right: 1px solid #ddd; /* Outer right border */
+}
+
+tr:last-child td {
+  border-bottom: 1px solid #ddd; /* Add border for last row */
+}
+
+tr:nth-child(even) {
+  background-color: #444444; /* Darker even row background color */
+}
