@@ -20,8 +20,9 @@ function parseCSV() {
         }
         tableHTML += "</table>";
         document.getElementById("csvTable").innerHTML = tableHTML;
+        loader();
       } else {
-        alert("Failed to load CSV file.");
+        console.error("Failed to load CSV file.");
       }
     }
   };
@@ -29,13 +30,21 @@ function parseCSV() {
   xhr.send();
 }
 
-function searchTable() {
+function loader() {
+  const header = document.getElementsByTagName("tr")[0];
+  header.childNodes.forEach(d => {
+    d.style.color = "#fff";
+  });
+  header.style.backgroundColor = "#4285F4";
   document.getElementsByTagName("table")[0].setAttribute("id", "dataTable");
+}
+
+function searchTable() {
   var input, filter, table, tr, td, i;
   input = document.getElementById("searchInput").value.toUpperCase();
   table = document.getElementById("dataTable");
   tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
+  for (i = 1; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[0];
     if (td) {
       if (td.textContent.toUpperCase().indexOf(input) > -1) {

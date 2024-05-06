@@ -1,18 +1,30 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
   text-align: center;
   background-color: #ffffff;
-  color: #000000;
+  color: #121212;
+  width: 100%;
+}
+
+h2{
+  color: #121212e1;
+  margin-top: 20px;
 }
 
 table {
   border-collapse: collapse;
   margin: 20px auto;
   background-color: #ffffff;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
+  border-radius: 1rem;
 }
 
 th,
@@ -46,4 +58,21 @@ tr:last-child td {
 
 tr:nth-child(even) {
   background-color: #edf2f7;
+}
+
+#searchInput{
+  padding: 0.8rem 1.5rem;
+  font-size: 1.2rem;
+  font-family: "Ubuntu", sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#searchInput:focus{
+  outline: none !important;
+  border: 2px solid #4299e1;
+  border-radius: 7px;
 }
