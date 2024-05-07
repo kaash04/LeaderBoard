@@ -1,3 +1,5 @@
+let total = 0;
+
 function parseCSV() {
   let csvFile = "data.csv";
   let xhr = new XMLHttpRequest();
@@ -54,6 +56,36 @@ function removeColumn(colIndex) {
   }
 }
 
+function drawCircleProgress(percent) {
+  const canvas = document.getElementById("circle-progress");
+  const context = canvas.getContext("2d");
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  const radius = 70;
+  const startAngle = -0.5 * Math.PI;
+  const endAngle = startAngle + (percent / 100) * (2 * Math.PI);
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  context.beginPath();
+  context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+  context.lineWidth = 10;
+  context.strokeStyle = "#ddd";
+  context.stroke();
+
+  context.beginPath();
+  context.arc(centerX, centerY, radius, startAngle, endAngle);
+  context.lineWidth = 10;
+  context.strokeStyle = "#4CAF50";
+  context.stroke();
+
+  context.font = '1.5rem Ubuntu';
+  context.fillStyle = '#000';
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText(percent + '/80', centerX, centerY);
+}
+
 function betterTable() {
   let table = document.getElementById("dataTable");
   var rows = table.getElementsByTagName("tr");
@@ -86,8 +118,10 @@ function betterTable() {
       img2.style.width = "1.2rem";
       img2.style.marginLeft = "0.5rem";
       cells[0].appendChild(img2);
+      total++;
     }
   }
+  drawCircleProgress((total/80)*100);
 }
 
 function rankEntries() {
@@ -97,24 +131,23 @@ function rankEntries() {
   let sortedRows = [];
 
   for (let i = 1; i < rows.length; i++) {
-      let cells = rows[i].getElementsByTagName("td");
-      let firstCellContent = cells[0].innerHTML.toLowerCase();
-      if (firstCellContent.includes("<img")) {
-          sortedRows.unshift(rows[i]);
-      } else {
-          sortedRows.push(rows[i]);
-      }
+    let cells = rows[i].getElementsByTagName("td");
+    let firstCellContent = cells[0].innerHTML.toLowerCase();
+    if (firstCellContent.includes("<img")) {
+      sortedRows.unshift(rows[i]);
+    } else {
+      sortedRows.push(rows[i]);
+    }
   }
 
   while (table.firstChild) {
-      table.removeChild(table.firstChild);
+    table.removeChild(table.firstChild);
   }
   table.appendChild(header);
   for (let j = 0; j < sortedRows.length; j++) {
-      table.appendChild(sortedRows[j]);
+    table.appendChild(sortedRows[j]);
   }
 }
-
 
 function loader() {
   const header = document.getElementsByTagName("tr")[0];
@@ -130,7 +163,7 @@ function loader() {
 
   // For mobiles
   betterTable();
-  if(window.innerWidth < 768){
+  if (window.innerWidth < 768) {
     removeColumn(2);
     removeColumn(2);
     removeColumn(2);
@@ -140,3 +173,5 @@ function loader() {
 }
 
 document.getElementById("searchInput").addEventListener("keyup", searchTable);
+
+
