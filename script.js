@@ -1,18 +1,18 @@
 function parseCSV() {
-  var csvFile = "data.csv";
-  var xhr = new XMLHttpRequest();
+  let csvFile = "data.csv";
+  let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
-        var csv = xhr.responseText;
-        var lines = csv.split("\n");
-        var tableHTML = "<table>";
-        for (var i = 0; i < lines.length; i++) {
+        let csv = xhr.responseText;
+        let lines = csv.split("\n");
+        let tableHTML = "<table>";
+        for (let i = 0; i < lines.length; i++) {
           if (lines[i]) {
             tableHTML += "<tr>";
-            var cells = lines[i].split(",");
-            for (var j = 0; j < cells.length; j++) {
-              var cellData = cells[j].replace(/"/g, "");
+            let cells = lines[i].split(",");
+            for (let j = 0; j < cells.length; j++) {
+              let cellData = cells[j].replace(/"/g, "");
               tableHTML += "<td>" + cellData + "</td>";
             }
             tableHTML += "</tr>";
@@ -30,17 +30,8 @@ function parseCSV() {
   xhr.send();
 }
 
-function loader() {
-  const header = document.getElementsByTagName("tr")[0];
-  header.childNodes.forEach(d => {
-    d.style.color = "#fff";
-  });
-  header.style.backgroundColor = "#4285F4";
-  document.getElementsByTagName("table")[0].setAttribute("id", "dataTable");
-}
-
 function searchTable() {
-  var input, filter, table, tr, td, i;
+  let input, filter, table, tr, td, i;
   input = document.getElementById("searchInput").value.toUpperCase();
   table = document.getElementById("dataTable");
   tr = table.getElementsByTagName("tr");
@@ -55,4 +46,98 @@ function searchTable() {
     }
   }
 }
+
+function removeColumn(colIndex) {
+  let table = document.getElementById("dataTable");
+  for (let i = 0; i < table.rows.length; i++) {
+    table.rows[i].deleteCell(colIndex);
+  }
+}
+
+function betterTable() {
+  let table = document.getElementById("dataTable");
+  var rows = table.getElementsByTagName("tr");
+
+  // renames
+  rows[0].getElementsByTagName("td")[5].innerHTML = "All 3 Pathways Completed";
+  // rows[0].getElementsByTagName("td")[6].innerHTML = "Code Redemption Status";
+  // rows[0].getElementsByTagName("td")[6].innerHTML = "Code Redemption Status";
+
+  for (let i = 1; i < rows.length; i++) {
+    let cells = rows[i].getElementsByTagName("td");
+    let cellText = cells[1].textContent.trim();
+    let img = document.createElement("img");
+    cells[0].style.textAlign = "left";
+    if (cellText === "All Good") {
+      img.src = "check.png";
+      img.alt = "Check";
+    } else {
+      img.src = "warning.png";
+      img.alt = "Warn";
+    }
+    cells[1].innerHTML = "";
+    img.style.width = "1.2rem";
+    cells[1].appendChild(img);
+
+    let forMedal = cells[5].textContent.trim();
+    let img2 = document.createElement("img");
+    if (forMedal === "Yes") {
+      img2.src = "medal.png";
+      img2.alt = "";
+      img2.style.width = "1.2rem";
+      img2.style.marginLeft = "0.8rem";
+      cells[0].appendChild(img2);
+    }
+  }
+}
+
+function rankEntries() {
+  let table = document.getElementById("dataTable");
+  let rows = table.getElementsByTagName("tr");
+  let header = rows[0];
+  let sortedRows = [];
+
+  for (let i = 1; i < rows.length; i++) {
+      let cells = rows[i].getElementsByTagName("td");
+      let firstCellContent = cells[0].innerHTML.toLowerCase();
+      if (firstCellContent.includes("<img")) {
+          sortedRows.unshift(rows[i]);
+      } else {
+          sortedRows.push(rows[i]);
+      }
+  }
+
+  while (table.firstChild) {
+      table.removeChild(table.firstChild);
+  }
+  table.appendChild(header);
+  for (let j = 0; j < sortedRows.length; j++) {
+      table.appendChild(sortedRows[j]);
+  }
+}
+
+
+function loader() {
+  const header = document.getElementsByTagName("tr")[0];
+  header.childNodes.forEach((d) => {
+    d.style.color = "#fff";
+    d.style.paddingTop = "1rem";
+    d.style.paddingBottom = "1rem";
+  });
+  header.style.backgroundColor = "#4285F4";
+  document.getElementsByTagName("table")[0].setAttribute("id", "dataTable");
+  removeColumn(1);
+  removeColumn(1); //skillboost url & mail remove
+
+  // For mobiles
+  betterTable();
+  if(window.innerWidth < 768){
+    removeColumn(2);
+    removeColumn(2);
+    removeColumn(2);
+    removeColumn(3);
+  }
+  rankEntries();
+}
+
 document.getElementById("searchInput").addEventListener("keyup", searchTable);
