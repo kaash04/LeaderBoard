@@ -60,8 +60,7 @@ function betterTable() {
 
   // renames
   rows[0].getElementsByTagName("td")[5].innerHTML = "All 3 Pathways Completed";
-  // rows[0].getElementsByTagName("td")[6].innerHTML = "Code Redemption Status";
-  // rows[0].getElementsByTagName("td")[6].innerHTML = "Code Redemption Status";
+  rows[0].getElementsByTagName("td")[6].innerHTML = "Code Redemption Status";
 
   for (let i = 1; i < rows.length; i++) {
     let cells = rows[i].getElementsByTagName("td");
@@ -85,7 +84,7 @@ function betterTable() {
       img2.src = "medal.png";
       img2.alt = "";
       img2.style.width = "1.2rem";
-      img2.style.marginLeft = "0.8rem";
+      img2.style.marginLeft = "0.5rem";
       cells[0].appendChild(img2);
     }
   }
