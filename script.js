@@ -56,14 +56,17 @@ function removeColumn(colIndex) {
   }
 }
 
-function drawCircleProgress(percent) {
+function drawCircleProgress(start, percent) {
+  if(start > percent){
+    return;
+  }
   const canvas = document.getElementById("circle-progress");
   const context = canvas.getContext("2d");
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
   const radius = 70;
   const startAngle = -0.5 * Math.PI;
-  const endAngle = startAngle + (percent / 100) * (2 * Math.PI);
+  const endAngle = startAngle + (start / 100) * (2 * Math.PI);
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -83,7 +86,10 @@ function drawCircleProgress(percent) {
   context.fillStyle = '#000';
   context.textAlign = 'center';
   context.textBaseline = 'middle';
-  context.fillText(percent + '/80', centerX, centerY);
+  context.fillText(start + '/80', centerX, centerY);
+  setTimeout(function() {
+    drawCircleProgress(start+1, percent);
+  }, 15);
 }
 
 function betterTable() {
@@ -121,7 +127,7 @@ function betterTable() {
       total++;
     }
   }
-  drawCircleProgress((total/80)*100);
+  drawCircleProgress(0, (total/80)*100);
 }
 
 function rankEntries() {
