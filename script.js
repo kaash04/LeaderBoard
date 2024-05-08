@@ -208,6 +208,7 @@ function loader() {
     removeColumn(2);
     removeColumn(2);
     removeColumn(3);
+    removeColumn(1);
   }
 }
 
