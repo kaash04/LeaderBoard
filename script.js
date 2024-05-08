@@ -33,7 +33,7 @@ function parseCSV() {
 }
 
 function searchTable() {
-  let input, filter, table, tr, td, i;
+  let input, table, tr, td, i;
   input = document.getElementById("searchInput").value.toUpperCase();
   table = document.getElementById("dataTable");
   tr = table.getElementsByTagName("tr");
@@ -57,7 +57,7 @@ function removeColumn(colIndex) {
 }
 
 function drawCircleProgress(start, percent) {
-  if(start > percent){
+  if (start > percent) {
     return;
   }
   const canvas = document.getElementById("circle-progress");
@@ -82,14 +82,30 @@ function drawCircleProgress(start, percent) {
   context.strokeStyle = "#4CAF50";
   context.stroke();
 
-  context.font = '1.5rem Ubuntu';
-  context.fillStyle = '#000';
-  context.textAlign = 'center';
-  context.textBaseline = 'middle';
-  context.fillText(start + '/80', centerX, centerY);
-  setTimeout(function() {
-    drawCircleProgress(start+1, percent);
+  context.font = "1.5rem Ubuntu";
+  context.fillStyle = "#000";
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillText(start + "/80", centerX, centerY);
+  setTimeout(function () {
+    drawCircleProgress(start + 1, percent);
   }, 15);
+}
+
+async function getLastCommitDateTime() {
+  const response = await fetch(
+    `https://api.github.com/repos/kaash04/LeaderBoard/commits`
+  );
+  const commits = await response.json();
+  if (commits && commits.length > 0) {
+    const lastCommitDateTime = new Date(commits[0].commit.author.date);
+    const currentTime = new Date();
+    const timeDifference = currentTime - lastCommitDateTime;
+    const hoursAgo = Math.round(timeDifference / (1000 * 60 * 60));
+    return hoursAgo;
+  } else {
+    console.error("Error Fetching Time of Last Commit");
+  }
 }
 
 function betterTable() {
@@ -97,7 +113,7 @@ function betterTable() {
   var rows = table.getElementsByTagName("tr");
 
   // renames
-  rows[0].getElementsByTagName("td")[5].innerHTML = "All 3 Pathways Completed";
+  rows[0].getElementsByTagName("td")[5].innerHTML = "Pathways Completed";
   rows[0].getElementsByTagName("td")[6].innerHTML = "Code Redemption Status";
 
   for (let i = 1; i < rows.length; i++) {
@@ -115,10 +131,10 @@ function betterTable() {
     cells[1].innerHTML = "";
     img.style.width = "1.2rem";
     cells[1].appendChild(img);
-
-    let forMedal = cells[5].textContent.trim();
+    
+    let score = parseInt(cells[5].innerText.charAt(0));
     let img2 = document.createElement("img");
-    if (forMedal === "Yes") {
+    if (score === 3) {
       img2.src = "medal.png";
       img2.alt = "";
       img2.style.width = "1.2rem";
@@ -127,7 +143,7 @@ function betterTable() {
       total++;
     }
   }
-  drawCircleProgress(0, (total/80)*100);
+  drawCircleProgress(0, (total / 80) * 100);
 }
 
 function rankEntries() {
@@ -138,24 +154,27 @@ function rankEntries() {
 
   for (let i = 1; i < rows.length; i++) {
     let cells = rows[i].getElementsByTagName("td");
-    let firstCellContent = cells[0].innerHTML.toLowerCase();
-    if (firstCellContent.includes("<img")) {
-      sortedRows.unshift(rows[i]);
-    } else {
-      sortedRows.push(rows[i]);
-    }
+    let score = parseInt(cells[5].innerText.charAt(0));
+    console.log(score);
+    sortedRows.push({ score: score, row: rows[i] });
   }
+
+  sortedRows.sort((a, b) => b.score - a.score);
 
   while (table.firstChild) {
     table.removeChild(table.firstChild);
   }
   table.appendChild(header);
   for (let j = 0; j < sortedRows.length; j++) {
-    table.appendChild(sortedRows[j]);
+    table.appendChild(sortedRows[j].row);
   }
 }
 
 function loader() {
+  const log = document.getElementById("log");
+  getLastCommitDateTime()
+    .then((hours) => (log.innerText = "Last Updated: " + hours + " hours ago"))
+    .catch((error) => console.error("Error:", error.message));
   const header = document.getElementsByTagName("tr")[0];
   header.childNodes.forEach((d) => {
     d.style.color = "#fff";
@@ -167,6 +186,21 @@ function loader() {
   removeColumn(1);
   removeColumn(1); //skillboost url & mail remove
 
+  let table = document.getElementById("dataTable");
+  for (let i = 1; i < table.rows.length; i++) {
+    let row = table.rows[i];
+    let sum = 0;
+
+    sum =
+      parseInt(row.cells[2].innerHTML) +
+      parseInt(row.cells[3].innerHTML) +
+      parseInt(row.cells[4].innerHTML);
+
+    // Set the sum in the last cell of the row
+    row.cells[5].innerHTML = sum + " / 3";
+  }
+
+  rankEntries();
   // For mobiles
   betterTable();
   if (window.innerWidth < 768) {
@@ -175,9 +209,6 @@ function loader() {
     removeColumn(2);
     removeColumn(3);
   }
-  rankEntries();
 }
 
 document.getElementById("searchInput").addEventListener("keyup", searchTable);
-
-

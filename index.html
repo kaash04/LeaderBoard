@@ -16,11 +16,16 @@
 <body onload="parseCSV()">
   <div class="container">
     <h2>GEN-AI LeaderBoard</h2>
-    <div class="search">
-      <input type="text" id="searchInput" placeholder="Search Your Name Here ">
-    </div>
-
     <canvas id="circle-progress" width="200" height="200"></canvas>
+
+
+    <div class="horcon">
+      <div class="search">
+        <input type="text" id="searchInput" placeholder="Search Your Name Here ">
+      </div>
+
+      <div id="log">Last Updated: 999 hours ago</div>
+    </div>
     <div id="csvTable"></div>
   </div>
   <script src="script.js"></script>

@@ -85,3 +85,22 @@ tr:nth-child(even) {
 #csvTable{
   width: 98%;
 }
+
+#log{
+  border: 1px solid #171717;
+  padding: 0.6rem 2rem;
+  border-radius: 10rem;
+  font-size: 0.8rem;
+  height: fit-content;
+  width:fit-content;
+  background-color: #dddddd80;
+}
+
+.horcon{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 5%;
+  width: 100%;
+}
