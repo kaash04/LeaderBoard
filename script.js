@@ -131,7 +131,7 @@ function betterTable() {
     cells[1].innerHTML = "";
     img.style.width = "1.2rem";
     cells[1].appendChild(img);
-    
+
     let score = parseInt(cells[5].innerText.charAt(0));
     let img2 = document.createElement("img");
     if (score === 3) {
@@ -154,16 +154,17 @@ function rankEntries() {
 
   for (let i = 1; i < rows.length; i++) {
     let cells = rows[i].getElementsByTagName("td");
-    let score = parseInt(cells[5].innerText.charAt(0));
-    console.log(score);
+    let score =
+      parseInt(cells[2].innerHTML) +
+      parseInt(cells[3].innerHTML) +
+      parseInt(cells[4].innerHTML);
+    cells[5].innerHTML = score + " / 3";
     sortedRows.push({ score: score, row: rows[i] });
   }
 
   sortedRows.sort((a, b) => b.score - a.score);
 
-  while (table.firstChild) {
-    table.removeChild(table.firstChild);
-  }
+  table.innerHTML = "";
   table.appendChild(header);
   for (let j = 0; j < sortedRows.length; j++) {
     table.appendChild(sortedRows[j].row);
@@ -185,21 +186,6 @@ function loader() {
   document.getElementsByTagName("table")[0].setAttribute("id", "dataTable");
   removeColumn(1);
   removeColumn(1); //skillboost url & mail remove
-
-  let table = document.getElementById("dataTable");
-  for (let i = 1; i < table.rows.length; i++) {
-    let row = table.rows[i];
-    let sum = 0;
-
-    sum =
-      parseInt(row.cells[2].innerHTML) +
-      parseInt(row.cells[3].innerHTML) +
-      parseInt(row.cells[4].innerHTML);
-
-    // Set the sum in the last cell of the row
-    row.cells[5].innerHTML = sum + " / 3";
-  }
-
   rankEntries();
   // For mobiles
   betterTable();
