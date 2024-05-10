@@ -67,6 +67,15 @@ function drawCircleProgress(start, percent) {
   const radius = 70;
   const startAngle = -0.5 * Math.PI;
   const endAngle = startAngle + (start / 80) * (2 * Math.PI);
+  let color;
+
+  if (start <= 30) {
+    color = interpolateColor("#FFA500", "#FFFF00", start / 30);
+  } else if (start <= 60) {
+    color = interpolateColor("#FFFF00", "#46e346", (start - 30) / 30);
+  } else {
+    color = interpolateColor("#46e346", "#32CD32", (start - 60) / 20);
+  }
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -79,9 +88,23 @@ function drawCircleProgress(start, percent) {
   context.beginPath();
   context.arc(centerX, centerY, radius, startAngle, endAngle);
   context.lineWidth = 10;
-  context.strokeStyle = "#4CAF50";
+  context.strokeStyle = color;
   context.stroke();
 
+  if (start == 80) {
+    context.beginPath();
+    context.arc(centerX, centerY, radius, startAngle, 2 * Math.PI);
+    context.lineWidth = 10;
+    context.strokeStyle = "#32CD32";
+    context.stroke();
+
+    context.font = "1.5rem Ubuntu";
+    context.fillStyle = "#000";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(percent + "/80", centerX, centerY);
+    return;
+  }
   context.font = "1.5rem Ubuntu";
   context.fillStyle = "#000";
   context.textAlign = "center";
@@ -90,6 +113,30 @@ function drawCircleProgress(start, percent) {
   setTimeout(function () {
     drawCircleProgress(start + 1, percent);
   }, 15);
+}
+
+function interpolateColor(color1, color2, ratio) {
+  color1 = color1.replace("#", "");
+  color2 = color2.replace("#", "");
+
+  var r = Math.round(
+    parseInt(color1.substring(0, 2), 16) * (1 - ratio) +
+      parseInt(color2.substring(0, 2), 16) * ratio
+  );
+  var g = Math.round(
+    parseInt(color1.substring(2, 4), 16) * (1 - ratio) +
+      parseInt(color2.substring(2, 4), 16) * ratio
+  );
+  var b = Math.round(
+    parseInt(color1.substring(4, 6), 16) * (1 - ratio) +
+      parseInt(color2.substring(4, 6), 16) * ratio
+  );
+
+  r = r.toString(16).length == 1 ? "0" + r.toString(16) : r.toString(16);
+  g = g.toString(16).length == 1 ? "0" + g.toString(16) : g.toString(16);
+  b = b.toString(16).length == 1 ? "0" + b.toString(16) : b.toString(16);
+
+  return "#" + r + g + b;
 }
 
 async function getLastCommitDateTime() {
