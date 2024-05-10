@@ -66,7 +66,7 @@ function drawCircleProgress(start, percent) {
   const centerY = canvas.height / 2;
   const radius = 70;
   const startAngle = -0.5 * Math.PI;
-  const endAngle = startAngle + (start / 100) * (2 * Math.PI);
+  const endAngle = startAngle + (start / 80) * (2 * Math.PI);
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -143,7 +143,7 @@ function betterTable() {
       total++;
     }
   }
-  drawCircleProgress(0, (total / 80) * 100);
+  drawCircleProgress(0, total);
 }
 
 function rankEntries() {
