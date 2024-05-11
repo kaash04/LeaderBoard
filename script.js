@@ -102,14 +102,14 @@ function drawCircleProgress(start, percent) {
     context.fillStyle = "#000";
     context.textAlign = "center";
     context.textBaseline = "middle";
-    context.fillText(percent + "/80", centerX, centerY);
+    context.fillText(percent, centerX, centerY);
     return;
   }
   context.font = "1.5rem Ubuntu";
   context.fillStyle = "#000";
   context.textAlign = "center";
   context.textBaseline = "middle";
-  context.fillText(start + "/80", centerX, centerY);
+  context.fillText(start, centerX, centerY);
   setTimeout(function () {
     drawCircleProgress(start + 1, percent);
   }, 15);
@@ -163,6 +163,7 @@ function betterTable() {
   rows[0].getElementsByTagName("td")[5].innerHTML = "Pathways Completed";
   rows[0].getElementsByTagName("td")[6].innerHTML = "Code Redemption Status";
 
+  let str = ['Shreyas S. Deshmukh', 'Vishal Maurya', 'Prajakta Prakash Jagdale', 'Vednarayan Sharad Hiralkar', 'ABHISHEK SACHIN KAPSE', 'Shreya Bhanudas Kakad', 'Tejas krushna parkhe', 'Harshada Bapu Giri', 'Syeda Saima Fatima', 'Darshana Kalya Dauda', 'Prem Vilas Zade', 'Prathamesh Shankar Pathade', 'Antara Yogesh Muley', 'Ajinkya Jitendra Nikumbh', 'Om Vilas jumde', 'Sakshi Rohidas Aglave', 'Pranali Vilas Kathar', 'Samit Gokul Chavhan', 'Tilak Ravikiran Varma', 'Pradeepta Kar', 'Sulabh Ambule', 'Harshad Sunil Shirsath', 'Gangaprasad Nagnath Urekar', 'Uday Sanjay Wagh', 'Abdullah Ahmed Siddiqui', 'Razvi Syed Sulaim', 'Kartik Labhshetwar', 'Gunjan Tembhare', 'Aditya Ravi Dhanure', 'Shreyash Bendke', 'Tushar Gakhare', 'Artika Chouhan', 'Apurva Dane', 'Maheshwari Chandankar', 'Shalini Rajendra Katore', 'Pooja Bodkhe', 'Mrunali Khairkar', 'Sneha Vaidya', 'Bhagyashri ingle', 'Minal Sanjay Saindane', 'Shreyash Sanjay Janbandhu', 'Shravani Ravindra Pathak', 'Vedant Gavhale', 'Akash Shinde', 'Priyanka Pramod Gangurde', 'Diksha amol sugandhi', 'Dimpal Vilas Barhate', 'Amol Sainath Padamwar', 'Samruddhi Nikhade', 'Vishal Rahangdale', 'Chinmay Gopal Paturkar', 'Viraj Wakle', 'Unik Chaudhari', 'Manish Mahanand Wakade', 'Anshul Umesh Meshram', 'Riddhi Vernekar', 'Riya Gobade', 'Aryan Shastri', 'Pratik Wayal', 'Nikita Ganesh Walake', 'Kanhopatra Krishna Kendre', 'Manashri Kukade', 'Teena Ratnghosh Lohakare', 'Krushnal Dipak Warke', 'Bhumika Kashinath Pandhare', 'Abhilasha Ravindra Aher', 'Mayur Ganesh Chaudhari', 'Samiksha Aher', 'Rugved Chandekar', 'Vaishnavi Rajendra Kakade', 'Upasana Avinash Pargaonkar', 'Sumit Nitesh Makariye', 'Shivam Singh', 'Tushar Mukherjee', 'Ayush Manohar Gajbhiye', 'Pawan Gajanan Gote', 'Mohit vitthal Mane', 'Kaivlya Vinod Khaire', 'Dnyaneshwar Manohar Jadhav', 'Vedant Rajesh Zade'];
   for (let i = 1; i < rows.length; i++) {
     let cells = rows[i].getElementsByTagName("td");
     let cellText = cells[1].textContent.trim();
@@ -182,9 +183,15 @@ function betterTable() {
     let score = parseInt(cells[5].innerText.charAt(0));
     let img2 = document.createElement("img");
     if (score === 3) {
-      img2.src = "medal.png";
+      if(str.includes(cells[0].innerText)){
+        img2.src = "medal.png";
+        img2.style.width = "1.3rem";
+      }
+      else{
+        img2.src = "silver.png";
+        img2.style.width = "1.7rem";
+      }
       img2.alt = "";
-      img2.style.width = "1.2rem";
       img2.style.marginLeft = "0.5rem";
       cells[0].appendChild(img2);
       total++;
